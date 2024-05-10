@@ -9,7 +9,7 @@
         ])
         <ul class="collapse" id="comment{{ $comment->id }}RepliesContainer">
             @include('partials.comment_form', [
-                'reactable' => $comment,
+                'commentable' => $comment,
             ])
         </ul>
     </div>

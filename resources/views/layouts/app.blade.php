@@ -32,6 +32,31 @@
             </div>
         </div>
     </body>
+    <script>
+        $(document).ready(function() {
+            $(document).on('submit', '.comment-form', function(e) {
+                e.preventDefault();
+                let form = $(this)
+                let formData = form.serialize()
+                let id = form.find('input[name="id"]').val()
+                let type = form.find('input[name="type"]').val()
+
+                makeComment(id, type, form, formData)
+            });
+
+            function makeComment(id, type, form, formData) {
+                $.ajax({
+                    type: "POST",
+                    url: "/comment",
+                    data: formData,
+                    success: function(response) {
+                        $(`#${type}${id}CommentsContainer`).append(response.view)
+                        form[0].reset()
+                    }
+                });
+            }
+        });
+    </script>
     @stack('scripts')
 
 </html>

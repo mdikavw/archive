@@ -53,16 +53,15 @@ class CommentController extends Controller
                 // $query->where('type', 'oppose');
             }
         ]);
-        $scripts = [];
-        foreach ($replies as $reply)
-        {
-            $script = view('partials.load_replies_script', ['comment' => $reply])->render();
-            $scripts[] = $script;
-        }
+        // $scripts = [];
+        // foreach ($replies as $reply)
+        // {
+        //     $script = view('partials.load_replies_script', ['comment' => $reply])->render();
+        //     $scripts[] = $script;
+        // }
         $view = view('partials.comments', ['comments' => $replies])->render();
         return response()->json([
             'view' => $view,
-            'scripts' => $scripts
         ]);
     }
 

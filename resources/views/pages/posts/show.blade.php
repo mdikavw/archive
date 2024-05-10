@@ -3,7 +3,7 @@
 @section('content')
     @include('partials.post', ['post' => $post, 'isPreview' => false])
     @include('partials.comment_form', [
-        'reactable' => $post,
+        'commentable' => $post,
         'isHidden' => false,
     ])
     <h3>Comments</h3>

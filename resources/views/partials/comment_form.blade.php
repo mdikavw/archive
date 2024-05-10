@@ -1,47 +1,20 @@
 @php
-    $type = get_class($reactable) == 'App\Models\Post' ? 'post' : 'comment';
-    $id = $reactable->id;
+    $type = get_class($commentable) == 'App\Models\Post' ? 'post' : 'comment';
+    $id = $commentable->id;
+    $post_id = $type == 'post' ? $commentable->id : $commentable->post->id;
+    $parent_id = $type == 'post' ? null : $commentable->id;
     $isHidden ??= true;
 @endphp
-<div id="{{ $type }}{{ $id }}commentFormContainer">
+<div>
     <form class="comment-form" id="{{ $type }}{{ $id }}CommentForm" action="/comment" method="POST">
         @csrf
         <input class="input" name="content" type="text" placeholder="Add a Comment...">
-        <input name="post_id" type="hidden" value="{{ $type == 'post' ? $reactable->id : $reactable->post->id }}">
-        <input name="parent_id" type="hidden" value="{{ $type == 'post' ? null : $reactable->id }}">
+        <input name="post_id" type="hidden" value="{{ $post_id }}">
+        <input name="parent_id" type="hidden" value="{{ $parent_id }}">
+        <input name="id" type="hidden" value="{{ $id }}">
+        <input name="type" type="hidden" value="{{ $type }}">
         <button class="comment-form-btn">
             <i class="fa-solid fa-paper-plane"></i>
         </button>
     </form>
 </div>
-
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            let type = '{{ $type }}'
-            let id = '{{ $id }}'
-            $(`#${type}${id}CommentForm`).submit(function(e) {
-                e.preventDefault();
-                let formData = $(this).serialize()
-
-                makeComment(formData)
-            });
-
-            function makeComment(formData) {
-                $.ajax({
-                    type: "POST",
-                    url: "/comment",
-                    data: formData,
-                    headers: {
-                        'X-CSRF-Token': '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        $(`#${type}${id}CommentForm`)[0].reset()
-                        $(`#post${id}CommentsContainer`).append(response.view)
-                        $(`#post${id}NoComments`).hide()
-                    }
-                });
-            }
-        });
-    </script>
-@endpush

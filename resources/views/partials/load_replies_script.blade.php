@@ -22,28 +22,5 @@
                 }
             });
         }
-
-        $(`#${type}${id}CommentForm`).submit(function(e) {
-            e.preventDefault();
-            let formData = $(this).serialize()
-
-            makeComment(formData)
-        });
-
-        function makeComment(formData) {
-            $.ajax({
-                type: "POST",
-                url: "/comment",
-                data: formData,
-                headers: {
-                    'X-CSRF-Token': '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    $(`#${type}${id}CommentForm`)[0].reset()
-                    $(`#comment${id}RepliesContainer`).append(response.view);
-                    $(`#post${id}NoComments`).hide()
-                }
-            });
-        }
     });
 </script>
