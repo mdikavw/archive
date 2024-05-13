@@ -44,6 +44,34 @@
                 makeComment(id, type, form, formData)
             });
 
+            $(document).on('click', '.comment-btn', function() {
+                let id = $(this).data('id')
+
+                if ($(`#comment${id}RepliesContainer`).children().length == 1) {
+                    getReplies(id)
+                }
+            });
+
+            $(document).on('submit', '.favor-form, .oppose-form', function(e) {
+                e.preventDefault()
+                let form = $(this)
+                let id = form.find('input[name="reactable_id"]').val()
+                let reactableType = form.find('input[name="reactable_type"]').val()
+                let formData = form.serialize()
+
+                makeReaction(id, reactableType, formData)
+            });
+
+            function getReplies(id) {
+                $.ajax({
+                    type: "GET",
+                    url: `/comments/${id}/replies`,
+                    success: function(response) {
+                        $(`#comment${id}RepliesContainer`).append(response.view);
+                    }
+                });
+            }
+
             function makeComment(id, type, form, formData) {
                 $.ajax({
                     type: "POST",
@@ -53,6 +81,65 @@
                         $(`#${type}${id}CommentsContainer`).append(response.view)
                         form[0].reset()
                     }
+                });
+            }
+
+            function makeReaction(id, reactableType, formData) {
+                let type = reactableType == 'App\\Models\\Post' ? 'post' : 'comment'
+                $.ajax({
+                    type: "POST",
+                    url: "/reaction",
+                    data: formData,
+                    headers: {
+                        'X-CSRF-Token': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log(type, id);
+                        $(`#${type}${id}ReactableCardStatsReactionCount`).text(response.reactionCount);
+                        if (response.type == 'favor') {
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-favor`).children()
+                                .removeClass(
+                                    'fa-regular')
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-favor`).children()
+                                .addClass(
+                                    'fa-solid')
+
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-oppose`).children()
+                                .removeClass(
+                                    'fa-solid')
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-oppose`).children()
+                                .addClass(
+                                    'fa-regular')
+                        } else if (response.type == 'oppose') {
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-favor`).children()
+                                .removeClass(
+                                    'fa-solid')
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-favor`).children()
+                                .addClass(
+                                    'fa-regular')
+
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-oppose`).children()
+                                .removeClass(
+                                    'fa-regular')
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-oppose`).children()
+                                .addClass(
+                                    'fa-solid')
+                        } else {
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-favor`).children()
+                                .removeClass(
+                                    'fa-solid')
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-favor`).children()
+                                .addClass(
+                                    'fa-regular')
+
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-oppose`).children()
+                                .removeClass(
+                                    'fa-solid')
+                            $(`#${type}-${id}-reactable-card-stats-btn-react-oppose`).children()
+                                .addClass(
+                                    'fa-regular')
+                        }
+                    },
                 });
             }
         });

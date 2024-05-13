@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PostController::class, 'index']);
 Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 Route::get('/posts/{post:slug}/comments', [CommentController::class, 'index']);
+Route::get('/posts/create', [PostController::class, 'create']);
 
 Route::get('/comments/{comment}/replies', [CommentController::class, 'replies']);
 

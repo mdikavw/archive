@@ -53,9 +53,6 @@
                     url: `/posts/${slug}/comments`,
                     success: function(response) {
                         $(`#post${id}CommentsContainer`).append(response.view);
-                        response.scripts.forEach(script => {
-                            $('body').append(script)
-                        });
                     },
                     complete: function() {
                         $(`#post${id}CommentsSpinner`).hide();

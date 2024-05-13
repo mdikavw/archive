@@ -16,7 +16,7 @@ class CommentController extends Controller
      */
     public function index(Post $post)
     {
-        $comments = $post->comments->load('user', 'post', 'comments', 'reactedByLoggedUser')->loadCount([
+        $comments = $post->comments->where('parent_id', null)->load('user', 'post', 'comments', 'reactedByLoggedUser')->loadCount([
             'comments',
             'reactions as favors_count' => function (Builder $query)
             {
@@ -27,16 +27,9 @@ class CommentController extends Controller
                 $query->where('type', 'oppose');
             }
         ]);
-        $scripts = [];
-        foreach ($comments as $reply)
-        {
-            $script = view('partials.load_replies_script', ['comment' => $reply])->render();
-            $scripts[] = $script;
-        }
         $view = view('partials.comments', ['post' => $post, 'comments' => $comments])->render();
         return response()->json([
-            'view' => $view,
-            'scripts' => $scripts
+            'view' => $view
         ]);
     }
 
@@ -50,15 +43,9 @@ class CommentController extends Controller
             },
             'reactions as opposes_count' => function (Builder $query)
             {
-                // $query->where('type', 'oppose');
+                $query->where('type', 'oppose');
             }
         ]);
-        // $scripts = [];
-        // foreach ($replies as $reply)
-        // {
-        //     $script = view('partials.load_replies_script', ['comment' => $reply])->render();
-        //     $scripts[] = $script;
-        // }
         $view = view('partials.comments', ['comments' => $replies])->render();
         return response()->json([
             'view' => $view,
