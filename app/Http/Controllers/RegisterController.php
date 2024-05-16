@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -20,20 +21,22 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|min:3|max:255|unique:users,username',
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:8|confirmed'
-        ]);
+        Log::info('Received registration request', ['request_data' => $request->all()]);
+        return response()->json($request->all());
+        // $validated = $request->validate([
+        //     'username' => 'required|string|min:3|max:255|unique:users,username',
+        //     'email' => 'required|string|email|max:255',
+        //     'password' => 'required|string|min:8|confirmed'
+        // ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'username' => $request->username,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password)
+        // ]);
 
-        return redirect('/login')->withSuccess('success', "Registration successful");
+        // return redirect('/login')->withSuccess('success', "Registration successful");
     }
 
     /**

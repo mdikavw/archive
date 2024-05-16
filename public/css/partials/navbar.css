@@ -25,3 +25,13 @@
 .nav-menu li {
     list-style: none;
 }
+
+.nav-create-btn {
+    background: none;
+    color: var(--md-sys-color-on-surface-bright);
+}
+
+.nav-create-btn:hover {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}

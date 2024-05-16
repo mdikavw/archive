@@ -17,14 +17,12 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials))
         {
-            $request->session()->regenerate();
-
-            return redirect()->intended('/');
+            return response()->json(['message' => 'Login successful'], 200);
         }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        else
+        {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
     }
 
     public function logout(Request $request): RedirectResponse

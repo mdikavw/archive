@@ -6,6 +6,8 @@
 @import url(partials/comment_form.css);
 @import url(partials/reactable_control.css);
 @import url(partials/comment.css);
+@import url(pages/posts/create.css);
+@import url(ckeditor.css);
 
 * {
     margin: 0;

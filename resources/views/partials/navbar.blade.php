@@ -14,7 +14,7 @@
             @auth
                 <li>
                     <a href="/posts/create">
-                        <button style="background-color: var(--md-sys-color-primary)">
+                        <button class="nav-create-btn">
                             <i class="fa-solid fa-plus"></i>
                             <span>create</span>
                         </button>

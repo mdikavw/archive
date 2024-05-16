@@ -1,0 +1,40 @@
+.dropdown-toggle {
+    background-color: #f6f7f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    padding: 8px 16px;
+}
+
+.dropdown-menu {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.dropdown-item {
+    padding: 8px 16px;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.create-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
